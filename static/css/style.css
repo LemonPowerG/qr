@@ -1,0 +1,561 @@
+:root {
+    --primary-color: #001055;
+    --primary-dark: #DAA520;
+    --primary-light: #FFF8DC;
+    --text-dark: #000000;
+    --text-light: #FFF;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--primary-light);
+    color: var(--text-dark);
+}
+
+.navbar {
+    background-color: var(--primary-color) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: var(--text-dark) !important;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    background-color: var(--text-light);
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-dark) !important;
+    color: var(--text-dark) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark) !important;
+}
+
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    margin: 10px 0;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    margin: 0 2px;
+    background-color: #ddd;
+    border-radius: 50%;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rating label:before {
+    content: '★';
+    color: white;
+    font-size: 20px;
+}
+
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+    background-color: var(--primary-color);
+}
+
+.table {
+    background-color: var(--text-light);
+    border-radius: 10px;
+}
+
+.table th {
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+}
+
+.fas.fa-star {
+    color: var(--primary-color) !important;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .card {
+        margin: 10px 0;
+    }
+    
+    .table-responsive {
+        border-radius: 10px;
+        overflow-x: auto;
+    }
+    
+    .rating label {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .rating label:before {
+        font-size: 16px;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+
+/* Chart Customization */
+canvas {
+    max-width: 100%;
+    height: auto !important;
+}
+
+/* QR Code Display */
+.qr-code-container {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--text-light);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.qr-code-container img {
+    max-width: 200px;
+    height: auto;
+}
+
+/* Feedback Rating Cards */
+.rating-card {
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.rating-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-dark);
+}
+
+/* Alert Styling */
+.alert {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.alert-success {
+    background-color: #DFF2BF;
+    color: #4F8A10;
+}
+
+.alert-error {
+    background-color: #FFD2D2;
+    color: #D8000C;
+}
+
+/* Form Controls */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+
+/* Search Form */
+.search-form {
+    margin-bottom: 20px;
+}
+
+.search-form .form-control {
+    border-radius: 20px;
+}
+
+/* Pagination */
+.pagination .page-link {
+    color: var(--text-dark);
+    background-color: var(--text-light);
+    border: 1px solid var(--primary-color);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-dark);
+    color: var(--text-dark);
+}
+
+/* Loading Spinner */
+.spinner-border {
+    color: var(--primary-color);
+}
+
+/* General Styles */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Table Styles */
+.table {
+    margin-bottom: 0;
+}
+
+/* Star Rating */
+.fa-star {
+    font-size: 1.1rem;
+}
+
+/* Search Form */
+.search-form {
+    max-width: 500px;
+    margin: 0 auto 2rem auto;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.page-link {
+    color: #007bff;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* Charts */
+canvas {
+    max-height: 300px;
+}
+
+/* QR Code */
+.qr-code-img {
+    max-width: 150px;
+    border: 1px solid #dee2e6;
+    padding: 0.5rem;
+    background-color: #fff;
+}
+
+/* Feedback Rating Card */
+.rating-card {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.rating-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* Alert Styles */
+.alert {
+    margin-bottom: 0;
+    border: none;
+    border-radius: 0;
+}
+
+/* Navbar Custom */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+}
+
+/* Form Controls */
+.form-control {
+    border-radius: 4px;
+}
+
+.input-group .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .table-responsive {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Rating stars */
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    cursor: pointer;
+    font-size: 30px;
+    color: #ddd;
+    padding: 0 2px;
+}
+
+.rating label:before {
+    content: '★';
+}
+
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+    color: #ffd700;
+}
+
+/* Card hover effects */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom button styles */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Form styles */
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Alert styles */
+.alert {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Navbar styles */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* QR code image */
+.qr-code {
+    max-width: 200px;
+    margin: 0 auto;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Feedback card */
+.feedback-card {
+    border-left: 4px solid #007bff;
+}
+
+/* Statistics badge */
+.badge {
+    font-size: 0.9em;
+    padding: 0.5em 1em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .rating label {
+        font-size: 24px;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Admin Dashboard Styles */
+.admin-dashboard {
+    padding: 20px;
+}
+
+.admin-dashboard .card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.admin-dashboard .card:hover {
+    transform: translateY(-5px);
+}
+
+.admin-dashboard .card-title {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.admin-dashboard .card-text {
+    color: #7f8c8d;
+}
+
+.admin-dashboard .btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.admin-dashboard .btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+.admin-dashboard .btn-danger {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.admin-dashboard .btn-danger:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}
+
+.qr-code-small {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.table-responsive {
+    margin-top: 1rem;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    border-top: none;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.btn-group .btn {
+    margin: 0 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .admin-dashboard {
+        padding: 10px;
+    }
+    
+    .qr-code-small {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .table th, .table td {
+        font-size: 14px;
+    }
+    
+    .btn-sm {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Alert styles */
+.alert {
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.alert-dismissible .close {
+    padding: 0.75rem 1.25rem;
+    color: inherit;
+}
+
+/* Navigation improvements */
+.navbar {
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: rgba(0,0,0,0.7);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #3498db;
+}
+
+.navbar-light .navbar-toggler {
+    border-color: transparent;
+} 

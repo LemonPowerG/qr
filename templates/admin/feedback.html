@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+
+{% block title %}{{ branch.name }} - უკუკავშირები{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ branch.name }} - უკუკავშირები</h2>
+    <p class="text-muted">{{ branch.location }}</p>
+    
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">სულ უკუკავშირი</h5>
+                    <h2 class="card-text">{{ stats.total_feedback }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">საერთო შეფასება</h5>
+                    <h2 class="card-text">{{ "%.1f"|format(stats.avg_overall_rating|default(0)) }}/10</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">კატეგორიების შეფასება</h5>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Rating Distribution -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">შეფასებების განაწილება</h5>
+                    <div class="rating-distribution">
+                        <div class="rating-group negative">
+                            <h6>უარყოფითი (1-6)</h6>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-danger" role="progressbar" 
+                                     style="width: {{ ((stats.negative_count|default(0) / stats.total_feedback|default(1)) * 100)|round }}%">
+                                    {{ stats.negative_count|default(0) }} შეფასება
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rating-group neutral">
+                            <h6>ნეიტრალური (7-8)</h6>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-warning" role="progressbar" 
+                                     style="width: {{ ((stats.neutral_count|default(0) / stats.total_feedback|default(1)) * 100)|round }}%">
+                                    {{ stats.neutral_count|default(0) }} შეფასება
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rating-group positive">
+                            <h6>დადებითი (9-10)</h6>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-success" role="progressbar" 
+                                     style="width: {{ ((stats.positive_count|default(0) / stats.total_feedback|default(1)) * 100)|round }}%">
+                                    {{ stats.positive_count|default(0) }} შეფასება
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Rating Details -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">მომსახურების ხარისხი</h5>
+                    <canvas id="serviceChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">სისუფთავე და კომფორტი</h5>
+                    <canvas id="cleanlinessChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">თანამშრომლების დამოკიდებულება</h5>
+                    <canvas id="staffChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">ლოდინის დრო</h5>
+                    <canvas id="waitingChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Feedback Timeline -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">უკუკავშირების დროის გრაფიკი</h5>
+            <canvas id="timelineChart"></canvas>
+        </div>
+    </div>
+    
+    <!-- Feedback List -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">უკუკავშირების სია</h5>
+        </div>
+        <div class="card-body">
+            {% if feedbacks %}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>თარიღი</th>
+                            <th>მომსახურება</th>
+                            <th>სისუფთავე</th>
+                            <th>თანამშრომლები</th>
+                            <th>ლოდინი</th>
+                            <th>საერთო</th>
+                            <th>კომენტარი</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for feedback in feedbacks %}
+                        <tr>
+                            <td>{{ feedback.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <span class="rating-badge 
+                                    {% if feedback.service_rating <= 6 %}text-danger
+                                    {% elif feedback.service_rating <= 8 %}text-warning
+                                    {% else %}text-success{% endif %}">
+                                    {{ feedback.service_rating }}/10
+                                </span>
+                            </td>
+                            <td>
+                                <span class="rating-badge 
+                                    {% if feedback.cleanliness_rating <= 6 %}text-danger
+                                    {% elif feedback.cleanliness_rating <= 8 %}text-warning
+                                    {% else %}text-success{% endif %}">
+                                    {{ feedback.cleanliness_rating }}/10
+                                </span>
+                            </td>
+                            <td>
+                                <span class="rating-badge 
+                                    {% if feedback.staff_rating <= 6 %}text-danger
+                                    {% elif feedback.staff_rating <= 8 %}text-warning
+                                    {% else %}text-success{% endif %}">
+                                    {{ feedback.staff_rating }}/10
+                                </span>
+                            </td>
+                            <td>
+                                <span class="rating-badge 
+                                    {% if feedback.waiting_time_rating <= 6 %}text-danger
+                                    {% elif feedback.waiting_time_rating <= 8 %}text-warning
+                                    {% else %}text-success{% endif %}">
+                                    {{ feedback.waiting_time_rating }}/10
+                                </span>
+                            </td>
+                            <td>
+                                <span class="rating-badge 
+                                    {% if feedback.overall_rating <= 6 %}text-danger
+                                    {% elif feedback.overall_rating <= 8 %}text-warning
+                                    {% else %}text-success{% endif %}">
+                                    {{ feedback.overall_rating }}/10
+                                </span>
+                            </td>
+                            <td>{{ feedback.comment or '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted">უკუკავშირები არ არის</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <a href="{{ url_for('admin') }}" class="btn btn-secondary mt-3">უკან დაბრუნება</a>
+</div>
+
+<style>
+.rating-badge {
+    display: inline-block;
+    padding: 0.25em 0.6em;
+    font-size: 0.9em;
+    font-weight: bold;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+}
+
+.rating-distribution {
+    padding: 1rem;
+}
+
+.rating-group {
+    margin-bottom: 1.5rem;
+}
+
+.rating-group h6 {
+    margin-bottom: 0.5rem;
+}
+
+.progress {
+    height: 25px;
+    border-radius: 15px;
+}
+
+.progress-bar {
+    line-height: 25px;
+    font-weight: bold;
+}
+</style>
+
+<script>
+// Category Averages Chart
+const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+new Chart(categoryCtx, {
+    type: 'radar',
+    data: {
+        labels: ['მომსახურება', 'სისუფთავე', 'თანამშრომლები', 'ლოდინის დრო', 'საერთო'],
+        datasets: [{
+            label: 'საშუალო შეფასება',
+            data: [
+                {{ stats.avg_service_rating|default(0)|round(1) }},
+                {{ stats.avg_cleanliness_rating|default(0)|round(1) }},
+                {{ stats.avg_staff_rating|default(0)|round(1) }},
+                {{ stats.avg_waiting_time_rating|default(0)|round(1) }},
+                {{ stats.avg_overall_rating|default(0)|round(1) }}
+            ],
+            fill: true,
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgb(54, 162, 235)',
+            pointBackgroundColor: 'rgb(54, 162, 235)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgb(54, 162, 235)'
+        }]
+    },
+    options: {
+        scales: {
+            r: {
+                min: 0,
+                max: 10,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
+
+// Function to create rating distribution chart
+function createRatingChart(ctx, data, title) {
+    return new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['1★', '2★', '3★', '4★', '5★'],
+            datasets: [{
+                label: title,
+                data: data,
+                backgroundColor: [
+                    '#dc3545',  // 1 star - danger
+                    '#ffc107',  // 2 stars - warning
+                    '#17a2b8',  // 3 stars - info
+                    '#007bff',  // 4 stars - primary
+                    '#28a745'   // 5 stars - success
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Create individual rating charts
+createRatingChart(
+    document.getElementById('serviceChart').getContext('2d'),
+    [
+        {{ stats.service_rating_1|default(0) }},
+        {{ stats.service_rating_2|default(0) }},
+        {{ stats.service_rating_3|default(0) }},
+        {{ stats.service_rating_4|default(0) }},
+        {{ stats.service_rating_5|default(0) }}
+    ],
+    'მომსახურების შეფასება'
+);
+
+createRatingChart(
+    document.getElementById('cleanlinessChart').getContext('2d'),
+    [
+        {{ stats.cleanliness_rating_1|default(0) }},
+        {{ stats.cleanliness_rating_2|default(0) }},
+        {{ stats.cleanliness_rating_3|default(0) }},
+        {{ stats.cleanliness_rating_4|default(0) }},
+        {{ stats.cleanliness_rating_5|default(0) }}
+    ],
+    'სისუფთავის შეფასება'
+);
+
+createRatingChart(
+    document.getElementById('staffChart').getContext('2d'),
+    [
+        {{ stats.staff_rating_1|default(0) }},
+        {{ stats.staff_rating_2|default(0) }},
+        {{ stats.staff_rating_3|default(0) }},
+        {{ stats.staff_rating_4|default(0) }},
+        {{ stats.staff_rating_5|default(0) }}
+    ],
+    'თანამშრომლების შეფასება'
+);
+
+createRatingChart(
+    document.getElementById('waitingChart').getContext('2d'),
+    [
+        {{ stats.waiting_time_rating_1|default(0) }},
+        {{ stats.waiting_time_rating_2|default(0) }},
+        {{ stats.waiting_time_rating_3|default(0) }},
+        {{ stats.waiting_time_rating_4|default(0) }},
+        {{ stats.waiting_time_rating_5|default(0) }}
+    ],
+    'ლოდინის დროის შეფასება'
+);
+
+// Timeline Chart
+const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+const feedbackDates = [
+    {% for feedback in feedbacks %}
+    '{{ feedback.created_at.strftime("%Y-%m-%d") }}',
+    {% endfor %}
+];
+
+// Count feedbacks per day
+const dateCount = feedbackDates.reduce((acc, date) => {
+    acc[date] = (acc[date] || 0) + 1;
+    return acc;
+}, {});
+
+// Sort dates
+const sortedDates = Object.keys(dateCount).sort();
+
+new Chart(timelineCtx, {
+    type: 'line',
+    data: {
+        labels: sortedDates,
+        datasets: [{
+            label: 'უკუკავშირების რაოდენობა',
+            data: sortedDates.map(date => dateCount[date]),
+            borderColor: '#007bff',
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
+</script>
+{% endblock %} 

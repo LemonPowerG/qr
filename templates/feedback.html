@@ -1,0 +1,504 @@
+{% extends "base.html" %}
+
+{% block title %}უკუკავშირი{% endblock %}
+
+{% block content %}
+<div class="feedback-page">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="feedback-card">
+                    <div class="feedback-header">
+                        <h2>{{ branch.name }}</h2>
+                        <p class="location"><i class="fas fa-map-marker-alt"></i> {{ branch.location }}</p>
+                    </div>
+                    <div class="feedback-body">
+                        <form method="POST" class="feedback-form">
+                            <!-- Service Rating -->
+                            <div class="rating-section">
+                                <div class="rating-header">
+                                    <h4><i class="fas fa-concierge-bell"></i> მომსახურების ხარისხი</h4>
+                                    <p class="rating-description">შეაფასეთ ჩვენი მომსახურების ხარისხი</p>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-numbers">
+                                        {% for i in range(1, 11) %}
+                                        <div class="rating-number">
+                                            <input type="radio" name="service_rating" value="{{ i }}" id="service{{ i }}" required>
+                                            <label for="service{{ i }}">
+                                                <span class="rating-value">{{ i }}</span>
+                                                <span class="rating-emoji"></span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="rating-labels">
+                                        <span class="negative"><i class="far fa-frown"></i> უარყოფითი</span>
+                                        <span class="neutral"><i class="far fa-meh"></i> ნეიტრალური</span>
+                                        <span class="positive"><i class="far fa-smile"></i> დადებითი</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cleanliness Rating -->
+                            <div class="rating-section">
+                                <div class="rating-header">
+                                    <h4><i class="fas fa-broom"></i> სისუფთავე და კომფორტი</h4>
+                                    <p class="rating-description">შეაფასეთ ჩვენი ფილიალის სისუფთავე და კომფორტი</p>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-numbers">
+                                        {% for i in range(1, 11) %}
+                                        <div class="rating-number">
+                                            <input type="radio" name="cleanliness_rating" value="{{ i }}" id="clean{{ i }}" required>
+                                            <label for="clean{{ i }}">
+                                                <span class="rating-value">{{ i }}</span>
+                                                <span class="rating-emoji"></span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="rating-labels">
+                                        <span class="negative"><i class="far fa-frown"></i> უარყოფითი</span>
+                                        <span class="neutral"><i class="far fa-meh"></i> ნეიტრალური</span>
+                                        <span class="positive"><i class="far fa-smile"></i> დადებითი</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Staff Rating -->
+                            <div class="rating-section">
+                                <div class="rating-header">
+                                    <h4><i class="fas fa-users"></i> თანამშრომლების დამოკიდებულება</h4>
+                                    <p class="rating-description">შეაფასეთ ჩვენი თანამშრომლების დამოკიდებულება</p>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-numbers">
+                                        {% for i in range(1, 11) %}
+                                        <div class="rating-number">
+                                            <input type="radio" name="staff_rating" value="{{ i }}" id="staff{{ i }}" required>
+                                            <label for="staff{{ i }}">
+                                                <span class="rating-value">{{ i }}</span>
+                                                <span class="rating-emoji"></span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="rating-labels">
+                                        <span class="negative"><i class="far fa-frown"></i> უარყოფითი</span>
+                                        <span class="neutral"><i class="far fa-meh"></i> ნეიტრალური</span>
+                                        <span class="positive"><i class="far fa-smile"></i> დადებითი</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Waiting Time Rating -->
+                            <div class="rating-section">
+                                <div class="rating-header">
+                                    <h4><i class="fas fa-clock"></i> ლოდინის დრო</h4>
+                                    <p class="rating-description">შეაფასეთ მომსახურების მიღების ლოდინის დრო</p>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-numbers">
+                                        {% for i in range(1, 11) %}
+                                        <div class="rating-number">
+                                            <input type="radio" name="waiting_time_rating" value="{{ i }}" id="wait{{ i }}" required>
+                                            <label for="wait{{ i }}">
+                                                <span class="rating-value">{{ i }}</span>
+                                                <span class="rating-emoji"></span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="rating-labels">
+                                        <span class="negative"><i class="far fa-frown"></i> უარყოფითი</span>
+                                        <span class="neutral"><i class="far fa-meh"></i> ნეიტრალური</span>
+                                        <span class="positive"><i class="far fa-smile"></i> დადებითი</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Overall Rating -->
+                            <div class="rating-section">
+                                <div class="rating-header">
+                                    <h4><i class="fas fa-star"></i> საერთო შეფასება</h4>
+                                    <p class="rating-description">როგორ შეაფასებდით მთლიანობაში ჩვენს მომსახურებას?</p>
+                                </div>
+                                <div class="rating-container">
+                                    <div class="rating-numbers">
+                                        {% for i in range(1, 11) %}
+                                        <div class="rating-number">
+                                            <input type="radio" name="overall_rating" value="{{ i }}" id="overall{{ i }}" required>
+                                            <label for="overall{{ i }}">
+                                                <span class="rating-value">{{ i }}</span>
+                                                <span class="rating-emoji"></span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="rating-labels">
+                                        <span class="negative"><i class="far fa-frown"></i> უარყოფითი</span>
+                                        <span class="neutral"><i class="far fa-meh"></i> ნეიტრალური</span>
+                                        <span class="positive"><i class="far fa-smile"></i> დადებითი</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Comment -->
+                            <div class="comment-section">
+                                <div class="rating-header">
+                                    <h4><i class="fas fa-comment"></i> დამატებითი კომენტარი</h4>
+                                    <p class="rating-description">გაგვიზიარეთ თქვენი მოსაზრება ან რჩევა</p>
+                                </div>
+                                <textarea class="form-control custom-textarea" id="comment" name="comment" rows="4" 
+                                          placeholder="თქვენი კომენტარი დაგვეხმარება სერვისის გაუმჯობესებაში..."></textarea>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg submit-btn">
+                                    <i class="fas fa-paper-plane"></i> შეფასების გაგზავნა
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.feedback-page {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.feedback-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+.feedback-card:hover {
+    transform: translateY(-5px);
+}
+
+.feedback-header {
+    background: linear-gradient(135deg, #0056b3 0%, #007bff 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.feedback-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+    z-index: 1;
+}
+
+.feedback-header h2 {
+    margin: 0;
+    font-size: 2.2em;
+    font-weight: 600;
+    position: relative;
+    z-index: 2;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.feedback-header .location {
+    margin-top: 10px;
+    font-size: 1.1em;
+    opacity: 0.9;
+    position: relative;
+    z-index: 2;
+}
+
+.feedback-body {
+    padding: 40px;
+}
+
+.rating-section {
+    background: #fff;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.rating-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.rating-header {
+    margin-bottom: 20px;
+}
+
+.rating-header h4 {
+    color: #2c3e50;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.rating-header i {
+    margin-right: 10px;
+    color: #007bff;
+    font-size: 1.2em;
+}
+
+.rating-description {
+    color: #6c757d;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+}
+
+.rating-container {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.rating-numbers {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+.rating-number {
+    text-align: center;
+    position: relative;
+}
+
+.rating-number input {
+    display: none;
+}
+
+.rating-number label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 1.1em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.rating-value {
+    position: relative;
+    z-index: 2;
+}
+
+.rating-emoji {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.3s ease;
+    font-size: 1.5em;
+    opacity: 0;
+}
+
+.rating-number input:checked + label .rating-value {
+    transform: translateY(-20px);
+    opacity: 0;
+}
+
+.rating-number input:checked + label .rating-emoji {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+/* Color coding and emojis for different ratings */
+.rating-number input[value="1"] + label,
+.rating-number input[value="2"] + label,
+.rating-number input[value="3"] + label,
+.rating-number input[value="4"] + label,
+.rating-number input[value="5"] + label,
+.rating-number input[value="6"] + label {
+    border: 2px solid #dc3545;
+}
+
+.rating-number input[value="7"] + label,
+.rating-number input[value="8"] + label {
+    border: 2px solid #ffc107;
+}
+
+.rating-number input[value="9"] + label,
+.rating-number input[value="10"] + label {
+    border: 2px solid #28a745;
+}
+
+.rating-number input[value="1"] + label .rating-emoji::before { content: '😡'; }
+.rating-number input[value="2"] + label .rating-emoji::before { content: '😠'; }
+.rating-number input[value="3"] + label .rating-emoji::before { content: '😦'; }
+.rating-number input[value="4"] + label .rating-emoji::before { content: '😕'; }
+.rating-number input[value="5"] + label .rating-emoji::before { content: '😐'; }
+.rating-number input[value="6"] + label .rating-emoji::before { content: '😶'; }
+.rating-number input[value="7"] + label .rating-emoji::before { content: '🙂'; }
+.rating-number input[value="8"] + label .rating-emoji::before { content: '😊'; }
+.rating-number input[value="9"] + label .rating-emoji::before { content: '😄'; }
+.rating-number input[value="10"] + label .rating-emoji::before { content: '😍'; }
+
+.rating-number input[value="1"]:checked + label,
+.rating-number input[value="2"]:checked + label,
+.rating-number input[value="3"]:checked + label,
+.rating-number input[value="4"]:checked + label,
+.rating-number input[value="5"]:checked + label,
+.rating-number input[value="6"]:checked + label {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    transform: scale(1.1);
+    color: white;
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
+.rating-number input[value="7"]:checked + label,
+.rating-number input[value="8"]:checked + label {
+    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+    transform: scale(1.1);
+    color: white;
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+}
+
+.rating-number input[value="9"]:checked + label,
+.rating-number input[value="10"]:checked + label {
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+    transform: scale(1.1);
+    color: white;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+.rating-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    padding: 0 10px;
+}
+
+.rating-labels span {
+    font-size: 0.9em;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.rating-labels .negative {
+    color: #dc3545;
+}
+
+.rating-labels .neutral {
+    color: #ffc107;
+}
+
+.rating-labels .positive {
+    color: #28a745;
+}
+
+.custom-textarea {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 1em;
+    resize: vertical;
+    transition: all 0.3s;
+    background: #f8f9fa;
+}
+
+.custom-textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    background: white;
+}
+
+.submit-btn {
+    padding: 15px 40px;
+    font-size: 1.1em;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border: none;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.2) 100%);
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(0, 123, 255, 0.4);
+}
+
+.submit-btn:hover::before {
+    transform: translateX(100%);
+}
+
+.submit-btn i {
+    margin-right: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 768px) {
+    .feedback-body {
+        padding: 20px;
+    }
+
+    .rating-section {
+        padding: 15px;
+    }
+
+    .rating-number label {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9em;
+    }
+    
+    .rating-labels {
+        font-size: 0.8em;
+    }
+
+    .feedback-header h2 {
+        font-size: 1.8em;
+    }
+
+    .rating-emoji {
+        font-size: 1.2em;
+    }
+}
+</style>
+{% endblock %} 

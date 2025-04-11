@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}ადმინისტრატორის პანელი{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">ადმინისტრატორის პანელი</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">ფილიალების მართვა</h5>
+                    <p class="card-text">დაამატეთ ან წაშალეთ ფილიალები</p>
+                    <a href="{{ url_for('add_branch') }}" class="btn btn-primary">
+                        <i class="fas fa-plus-circle"></i> ფილიალის დამატება
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">უკუკავშირის ნახვა</h5>
+                    <p class="card-text">ნახეთ მომხმარებლების უკუკავშირი</p>
+                    <a href="{{ url_for('view_feedback') }}" class="btn btn-primary">
+                        <i class="fas fa-comments"></i> უკუკავშირის ნახვა
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">სტატისტიკა</h5>
+                    <p class="card-text">ნახეთ დეტალური სტატისტიკა</p>
+                    <a href="{{ url_for('statistics') }}" class="btn btn-primary">
+                        <i class="fas fa-chart-bar"></i> სტატისტიკის ნახვა
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if branches %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">ფილიალების სია</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>სახელი</th>
+                                    <th>QR კოდი</th>
+                                    <th>მოქმედებები</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for branch in branches %}
+                                <tr>
+                                    <td>{{ branch[1] }}</td>
+                                    <td>
+                                        <img src="{{ url_for('static', filename='qr_codes/' + branch[0]|string + '.png') }}" 
+                                             alt="QR Code" class="qr-code-small">
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ url_for('download_qr', branch_id=branch[0]) }}" 
+                                               class="btn btn-sm btn-primary">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                            <a href="{{ url_for('delete_branch', branch_id=branch[0]) }}" 
+                                               class="btn btn-sm btn-danger"
+                                               onclick="return confirm('დარწმუნებული ხართ?');">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}მთავარი გვერდი{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="display-4">მოგესალმებით უკუკავშირის სისტემაში</h1>
+    <p class="lead">გაგვიზიარეთ თქვენი მოსაზრება ჩვენს სერვისზე</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body text-center">
+                <h2 class="card-title">როგორ მისცეთ უკუკავშირი?</h2>
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="step">
+                            <i class="fas fa-qrcode fa-3x mb-3 text-primary"></i>
+                            <h4>1. სკანირება</h4>
+                            <p>სკანირეთ QR კოდი ფილიალში</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="step">
+                            <i class="fas fa-star fa-3x mb-3 text-primary"></i>
+                            <h4>2. შეფასება</h4>
+                            <p>მიანიჭეთ შეფასება და დაწერეთ კომენტარი</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="step">
+                            <i class="fas fa-check-circle fa-3x mb-3 text-primary"></i>
+                            <h4>3. გაგზავნა</h4>
+                            <p>გაგზავნეთ თქვენი უკუკავშირი</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.step {
+    padding: 20px;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    background-color: #f8f9fa;
+}
+
+.step i {
+    color: #007bff;
+}
+
+.step h4 {
+    margin: 15px 0;
+    font-size: 1.2rem;
+}
+
+.step p {
+    color: #6c757d;
+    margin-bottom: 0;
+}
+</style>
+{% endblock %} 
